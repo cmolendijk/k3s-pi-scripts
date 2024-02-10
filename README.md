@@ -8,3 +8,32 @@ First we need to prepare our Raspberry Pi cards with a bootable. I use the [Rasp
  - **Storage device:** The devices that has my SD card
 
 In the next step we can configure are own settings. I always already makes sure I can find the Raspberry PI by setting a correct hostname, already make sure I can connect trough SSH and set the WIFI if I don't use Kabels.
+
+### Preconfigure node
+When you Raspberry PI is running, you can connect to it trough SSH. When connected please run the following commands to get this repo into local storage and run the scripts to preconfigure a node.
+
+```
+mkdir $HOME/repos
+cd $HOME/repos
+git clone https://github.com/cmolendijk/k3s-pi-scripts.git
+cd k3s-pi-scripts
+sudo installation/preconfiguration.sh
+```
+
+Afther the reboot, login again and follow the install control node or the install worker node based on your needs.
+
+### Install control node
+When you are again connected trough ssh to the node that you want to make the control node.
+
+```
+cd $HOME/repos/k3s-pi-scripts
+sudo installation/k3s-control-node-install.sh
+```
+
+### Install worker node
+When you are again connected trough ssh to the node that you want to make the worker node.
+
+```
+cd $HOME/repos/k3s-pi-scripts
+sudo installation/k3s-worker-node-install.sh
+```
