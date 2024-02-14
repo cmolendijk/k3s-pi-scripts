@@ -9,6 +9,6 @@ bash $HOME/repos/k3s-pi-scripts/installation/helm-install.sh
 
 echo "Copy k3s configuration file to Kubernets default directory"
 mkdir $HOME/.kube
-cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/.
+sudo cp /etc/rancher/k3s/k3s.yaml $HOME/.kube/.
 
 echo "Control node configuration set up."
