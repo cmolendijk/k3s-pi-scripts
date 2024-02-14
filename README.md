@@ -29,12 +29,12 @@ When you are again connected trough ssh to the node that you want to make the co
 
 ```
 cd $HOME/repos/k3s-pi-scripts
-bash $HOME/repos/k3s-pi-scripts/installation/k3s-control-node-install.sh
+bash $HOME/repos/k3s-pi-scripts/installation/control-node.sh
 ```
 
 ### Install worker node
 When you are again connected trough ssh to the node that you want to make the worker node.
 
 ```
-bash $HOME/repos/k3s-pi-scripts/installation/k3s-worker-node-install.sh
+bash $HOME/repos/k3s-pi-scripts/installation/worker-node.sh
 ```
