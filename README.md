@@ -13,13 +13,13 @@ In the next step we can configure are own settings. I always already makes sure 
 When you Raspberry PI is running, you can connect to it trough SSH. When connected please run the following commands to get this repo into local storage.
 
 ```
-curl -sSL https://raw.githubusercontent.com/cmolendijk/k3s-pi-scripts/main/getting-started.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/cmolendijk/k3s-pi-scripts/main/getting-started.sh | bash
 ```
 
 Then run the following script to preconfigure a node.
 
 ```
-cd /root/repos/k3s-pi-scripts
+cd $HOME/repos/k3s-pi-scripts
 sudo installation/preconfiguration.sh
 ```
 
@@ -29,7 +29,7 @@ Afther the reboot, login again and follow the install control node or the instal
 When you are again connected trough ssh to the node that you want to make the control node.
 
 ```
-cd /root/repos/k3s-pi-scripts
+cd $HOME/repos/k3s-pi-scripts
 sudo installation/k3s-control-node-install.sh
 ```
 
@@ -37,6 +37,6 @@ sudo installation/k3s-control-node-install.sh
 When you are again connected trough ssh to the node that you want to make the worker node.
 
 ```
-cd /root/repos/k3s-pi-scripts
+cd $HOME/repos/k3s-pi-scripts
 sudo installation/k3s-worker-node-install.sh
 ```
