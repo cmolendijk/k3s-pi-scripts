@@ -19,8 +19,7 @@ curl -sSL https://raw.githubusercontent.com/cmolendijk/k3s-pi-scripts/main/getti
 Then run the following script to preconfigure a node.
 
 ```
-cd $HOME/repos/k3s-pi-scripts
-sudo installation/preconfiguration.sh
+bash $HOME/repos/k3s-pi-scripts/installation/preconfiguration.sh
 ```
 
 Afther the reboot, login again and follow the install control node or the install worker node based on your needs.
@@ -30,13 +29,12 @@ When you are again connected trough ssh to the node that you want to make the co
 
 ```
 cd $HOME/repos/k3s-pi-scripts
-sudo installation/k3s-control-node-install.sh
+bash $HOME/repos/k3s-pi-scripts/installation/k3s-control-node-install.sh
 ```
 
 ### Install worker node
 When you are again connected trough ssh to the node that you want to make the worker node.
 
 ```
-cd $HOME/repos/k3s-pi-scripts
-sudo installation/k3s-worker-node-install.sh
+bash $HOME/repos/k3s-pi-scripts/installation/k3s-worker-node-install.sh
 ```
