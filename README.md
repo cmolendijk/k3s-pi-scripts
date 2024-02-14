@@ -10,13 +10,16 @@ First we need to prepare our Raspberry Pi cards with a bootable. I use the [Rasp
 In the next step we can configure are own settings. I always already makes sure I can find the Raspberry PI by setting a correct hostname, already make sure I can connect trough SSH and set the WIFI if I don't use Kabels.
 
 ### Preconfigure node
-When you Raspberry PI is running, you can connect to it trough SSH. When connected please run the following commands to get this repo into local storage and run the scripts to preconfigure a node.
+When you Raspberry PI is running, you can connect to it trough SSH. When connected please run the following commands to get this repo into local storage.
 
 ```
-mkdir $HOME/repos
-cd $HOME/repos
-git clone https://github.com/cmolendijk/k3s-pi-scripts.git
-cd k3s-pi-scripts
+curl -sSL https://raw.githubusercontent.com/cmolendijk/k3s-pi-scripts/main/getting-started.sh | bash
+```
+
+Then run the following script to preconfigure a node.
+
+```
+cd $HOME/repos/k3s-pi-scripts
 sudo installation/preconfiguration.sh
 ```
 
