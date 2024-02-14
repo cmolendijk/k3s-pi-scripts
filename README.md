@@ -28,7 +28,6 @@ Afther the reboot, login again and follow the install control node or the instal
 When you are again connected trough ssh to the node that you want to make the control node.
 
 ```
-cd $HOME/repos/k3s-pi-scripts
 bash $HOME/repos/k3s-pi-scripts/installation/control-node.sh
 ```
 
