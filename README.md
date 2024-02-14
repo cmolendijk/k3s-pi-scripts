@@ -13,7 +13,7 @@ In the next step we can configure are own settings. I always already makes sure 
 When you Raspberry PI is running, you can connect to it trough SSH. When connected please run the following commands to get this repo into local storage.
 
 ```
-curl -sSL https://raw.githubusercontent.com/cmolendijk/k3s-pi-scripts/main/getting-started.sh | bash
+curl -sSL https://raw.githubusercontent.com/cmolendijk/k3s-pi-scripts/main/getting-started.sh | sudo bash
 ```
 
 Then run the following script to preconfigure a node.
