@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Upgrade the system
-upgrade.sh
+bash ./upgrade.sh
 
 echo "Setting up preconfiguration"
 
@@ -20,7 +20,7 @@ echo "cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory" | sudo tee -a /
 echo "Preconfiguration set up."
 
 # set the static IP address
-fixed-ip.sh
+bash ./fixed-ip.sh
 
 # Reboot the system
 sudo reboot
