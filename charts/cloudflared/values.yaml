@@ -1,0 +1,90 @@
+# Default values for cloudflared.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replica:
+  # This will use DaemonSet to deploy cloudflared to all nodes
+  allNodes: true
+  # If previous flag disabled, this will use Deployment to deploy cloudflared only number of following count
+  count: 1
+
+terminationGracePeriodSeconds: 30
+
+image:
+  repository: cloudflare/cloudflared
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# Please find more configuration from https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/arguments/
+tunnelConfig:
+  name: ""
+  metricsUpdateFrequency: 5s
+  autoUpdateFrequency: 24h
+  noAutoUpdate: true
+  gracePeriod: 30s
+  retries: 5
+  # auto, http2, h2mux, quic
+  protocol: auto
+  # info, warn, error, fatal, panic
+  logLevel: info
+  transportLogLevel: warn
+
+### Set up custom ingress rules here
+ingress:
+  - hostname: example.com # or "*.example.com" but you must define a CNAME record for "*" to your DNS
+    service: http://traefik.kube-system.svc.cluster.local:80
+
+  - service: http_status:404
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 1
+
+nodeSelector:
+  kubernetes.io/os: linux
+
+tolerations:
+  # Make sure cloudflared gets scheduled on all nodes.
+  - effect: NoSchedule
+    operator: Exists
+
+affinity: {}
