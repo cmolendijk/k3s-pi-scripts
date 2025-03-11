@@ -16,26 +16,28 @@ read DNS_SERVER
 
 # Get the network interfaces
 echo "Available network interfaces:"
-nmcli con show
+ip link show
 
 # Ask for the network interface name
 echo "Please enter the network interface name for the fixed IP (e.g., eth0):"
 read INTERFACE_NAME
 
-# Set the static IP address
-sudo nmcli con mod $INTERFACE_NAME ipv4.addresses $IP_ADDRESS/24
+# Create netplan configuration
+sudo tee /etc/netplan/01-netcfg.yaml << EOF
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    $INTERFACE_NAME:
+      dhcp4: no
+      addresses:
+        - $IP_ADDRESS/24
+      gateway4: $GATEWAY_ADDRESS
+      nameservers:
+        addresses: [$DNS_SERVER]
+EOF
 
-# Set the gateway
-sudo nmcli con mod $INTERFACE_NAME ipv4.gateway $GATEWAY_ADDRESS
+# Apply the netplan configuration
+sudo netplan apply
 
-# Set the DNS server
-sudo nmcli con mod $INTERFACE_NAME ipv4.dns $DNS_SERVER
-
-# Set the connection to be automatically connected
-sudo nmcli con mod $INTERFACE_NAME ipv4.method manual
-
-# Bring the interface down and up to apply the changes
-sudo nmcli con down $INTERFACE_NAME
-sudo nmcli con up $INTERFACE_NAME
-
-echo "Fixed IP address set up."
+echo "Fixed IP address set up using netplan. Please verify the connection."
