@@ -32,15 +32,46 @@ read IP_ADDRESS
 echo "Please enter the default gateway:"
 read GATEWAY_ADDRESS
 
+# For wireless interfaces, we need the SSID and password
+if [[ "$INTERFACE" == wlan* ]]; then
+    echo "Wireless interface detected."
+    echo "Please enter the WiFi SSID:"
+    read WIFI_SSID
+    echo "Please enter the WiFi password:"
+    read -s WIFI_PASSWORD
+fi
+
 # Backup existing netplan configuration
 sudo cp /etc/netplan/00-installer-config.yaml /etc/netplan/00-installer-config.yaml.backup 2>/dev/null || true
 
 # Remove any existing netplan configurations to avoid conflicts
 sudo rm -f /etc/netplan/01-netcfg.yaml
 sudo rm -f /etc/netplan/00-installer-config.yaml
+sudo rm -f /etc/netplan/50-cloud-init.yaml
 
 # Create new netplan configuration with proper permissions
-sudo tee /etc/netplan/00-installer-config.yaml << EOF
+if [[ "$INTERFACE" == wlan* ]]; then
+    # Configuration for wireless interface
+    sudo tee /etc/netplan/00-installer-config.yaml << EOF
+network:
+  version: 2
+  wifis:
+    $INTERFACE:
+      dhcp4: false
+      addresses:
+        - $IP_ADDRESS
+      routes:
+        - to: default
+          via: $GATEWAY_ADDRESS
+      nameservers:
+        addresses: [1.1.1.1, 8.8.8.8]
+      access-points:
+        "$WIFI_SSID":
+          password: "$WIFI_PASSWORD"
+EOF
+else
+    # Configuration for ethernet interface
+    sudo tee /etc/netplan/00-installer-config.yaml << EOF
 network:
   version: 2
   ethernets:
@@ -54,6 +85,7 @@ network:
       nameservers:
         addresses: [1.1.1.1, 8.8.8.8]
 EOF
+fi
 
 # Set correct permissions for netplan configuration
 sudo chmod 600 /etc/netplan/00-installer-config.yaml
