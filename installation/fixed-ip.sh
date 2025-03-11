@@ -1,13 +1,28 @@
 #!/bin/sh
 
-echo "Setting up fixed IP address for eth0"
+echo "Setting up fixed IP address"
+
+# Show available network interfaces
+echo "Available network interfaces:"
+ip -br link show | grep -v "lo" | awk '{print $1}'
+
+# Ask which interface to configure
+echo -n "Enter the network interface to configure (e.g., wlan0, eth0): "
+read INTERFACE
+
+# Validate interface exists
+if ! ip link show "$INTERFACE" >/dev/null 2>&1; then
+    echo "Error: Interface $INTERFACE does not exist"
+    exit 1
+fi
 
 # Get current network configuration as backup
-CURRENT_IP=$(ip addr show eth0 | grep "inet " | awk '{print $2}')
+CURRENT_IP=$(ip addr show $INTERFACE | grep "inet " | awk '{print $2}')
 CURRENT_GATEWAY=$(ip route show default | awk '{print $3}')
 
-echo "Current IP: $CURRENT_IP"
-echo "Current Gateway: $CURRENT_GATEWAY"
+echo "Current configuration for $INTERFACE:"
+echo "IP: $CURRENT_IP"
+echo "Gateway: $CURRENT_GATEWAY"
 
 # Ask for the IP address
 echo "Please enter the IP address with subnet mask (e.g., 192.168.1.100/24):"
@@ -29,7 +44,7 @@ sudo tee /etc/netplan/00-installer-config.yaml << EOF
 network:
   version: 2
   ethernets:
-    eth0:
+    $INTERFACE:
       dhcp4: false
       addresses:
         - $IP_ADDRESS
@@ -57,6 +72,6 @@ sudo chmod 644 /etc/resolv.conf
 echo "nameserver 1.1.1.1" | sudo tee /etc/resolv.conf
 echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf
 
-echo "Fixed IP address has been set up for eth0. Please verify the connection."
+echo "Fixed IP address has been set up for $INTERFACE. Please verify the connection."
 echo "New configuration:"
-ip addr show eth0 | grep "inet "
+ip addr show $INTERFACE | grep "inet "
