@@ -43,7 +43,7 @@ securityContext: {}
 
 # Please find more configuration from https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/configuration/arguments/
 tunnelConfig:
-  name: ""
+  name: "pi-tunnel"
   metricsUpdateFrequency: 5s
   autoUpdateFrequency: 24h
   noAutoUpdate: true
@@ -57,8 +57,10 @@ tunnelConfig:
 
 ### Set up custom ingress rules here
 ingress:
-  - hostname: example.com # or "*.example.com" but you must define a CNAME record for "*" to your DNS
-    service: http://traefik.kube-system.svc.cluster.local:80
+  - hostname: argo.techzen.nl
+    service: https://argocd-server.argocd.svc.cluster.local:443
+  - hostname: dashboard.techzen.nl
+    service: https://kubernetes-dashboard-kong-proxy.kubernetes-dashboard.svc.cluster.local:443
 
   - service: http_status:404
 
